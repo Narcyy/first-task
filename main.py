@@ -64,7 +64,7 @@ async def delete_user(user_id: int):
     for user in users:
         if user['id'] == user_id:
             users.remove(user)
-            return {'message': 'User deleted succesfully', "user": user}
+            return Response(status_code=status.HTTP_204_NO_CONTENT)
     raise HTTPException(
         status_code = 404,
         detail = f"user with user id {user_id} does not exist!" 
