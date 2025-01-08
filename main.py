@@ -1,5 +1,4 @@
 from fastapi import FastAPI,HTTPException
-from typing import Optional, List
 from models import User
 from pydantic import BaseModel
 
@@ -17,20 +16,22 @@ users = [
         'name' : 'Kavya',
         'email' : 'kavya@email.com',
         'age' : 22
+        },
+        {
+        'id' : 103,
+        'name' : 'Pawan',
+        'email' : 'pawan@email.com',
+        'age' : 25
         }
 ]
-
-@app.get('/users')
-def fetching():
-    return users
 
 @app.post("/post_user")
 async def register_user(user: User):
     for existing_user in users:
-        if existing_user['id']== user.id:
+        if existing_user['id'] == user.id:
             raise HTTPException(
-        status_code= 404,
-        detail= f"user with {user.id} already exist!" )
+        status_code = 404,
+        detail = f"user with {user.id} already exist!" )
 
     users.append(user.model_dump())
     return {'message': 'user added succesfully', "user": user}
@@ -44,7 +45,7 @@ async def fetch_user(updated_user: User, user_id: int):
             
     raise HTTPException(
         status_code= 404,
-        detail= f"user with user id {user_id} does not exist!" )
+        detail = f"user with user id {user_id} does not exist!" )
 
 @app.get("/users/{user_id}")
 async def fetch_users(user_id: int):
@@ -52,7 +53,7 @@ async def fetch_users(user_id: int):
         if user['id'] == user_id:
             return user
     raise HTTPException(
-        status_code= 404,
+        status_code = 404,
         detail = f"user with {user_id} does not exist!"
     )
         
@@ -61,11 +62,11 @@ async def fetch_users(user_id: int):
 @app.delete("/delete_users/{user_id}")
 async def delete_user(user_id: int):
     for user in users:
-        if user['id']== user_id:
+        if user['id'] == user_id:
             users.remove(user)
             return {'message': 'User deleted succesfully', "user": user}
     raise HTTPException(
-        status_code= 404,
-        detail= f"user with user id {user_id} does not exist!" 
+        status_code = 404,
+        detail = f"user with user id {user_id} does not exist!" 
     )
 
